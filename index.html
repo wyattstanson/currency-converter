@@ -1,41 +1,324 @@
-<html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<title>Live Currency Converter</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>XCHANGE — Global Currency Platform</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
 </head>
-
 <body>
 
-<div class="container">
+  <nav class="navbar" id="navbar">
+    <div class="nav-inner">
+      <div class="nav-brand">
+        <span class="nav-logo">XCHANGE</span>
+        <span class="nav-tag">MARKETS</span>
+      </div>
+      <div class="nav-links">
+        <a href="#about" class="nav-link scroll-link">About</a>
+        <a href="#markets" class="nav-link scroll-link">Markets</a>
+        <a href="#converter" class="nav-link scroll-link">Convert</a>
+      </div>
+      <a href="#converter" class="nav-cta scroll-link">Convert Now</a>
+    </div>
+  </nav>
 
-<h1>Currency Converter</h1>
+  <section class="hero" id="hero">
+    <canvas id="bgChart"></canvas>
+    <div class="hero-overlay"></div>
+    <div class="hero-grid-lines"></div>
 
-<input type="number" id="amount" placeholder="Enter Amount">
+    <div class="hero-hud">
+      <div class="hud-card">
+        <div class="hud-top"><span class="hud-pair">EUR/USD</span><span class="hud-change up">▲ 0.14%</span></div>
+        <span class="hud-price" id="hudP1">1.0842</span>
+        <canvas class="hud-spark" id="spark1" width="110" height="36"></canvas>
+      </div>
+      <div class="hud-card">
+        <div class="hud-top"><span class="hud-pair">GBP/USD</span><span class="hud-change up">▲ 0.08%</span></div>
+        <span class="hud-price" id="hudP2">1.2741</span>
+        <canvas class="hud-spark" id="spark2" width="110" height="36"></canvas>
+      </div>
+      <div class="hud-card">
+        <div class="hud-top"><span class="hud-pair">USD/JPY</span><span class="hud-change down">▼ 0.22%</span></div>
+        <span class="hud-price" id="hudP3">149.82</span>
+        <canvas class="hud-spark" id="spark3" width="110" height="36"></canvas>
+      </div>
+      <div class="hud-card">
+        <div class="hud-top"><span class="hud-pair">USD/INR</span><span class="hud-change down">▼ 0.05%</span></div>
+        <span class="hud-price" id="hudP4">83.42</span>
+        <canvas class="hud-spark" id="spark4" width="110" height="36"></canvas>
+      </div>
+    </div>
 
-<select id="fromCurrency">
-<option value="USD">USD</option>
-<option value="INR">INR</option>
-<option value="EUR">EUR</option>
-<option value="GBP">GBP</option>
-<option value="JPY">JPY</option>
-</select>
+    <div class="hero-content">
+      <div class="hero-badge"><span class="live-dot"></span>LIVE MARKETS &nbsp;·&nbsp; 170+ CURRENCIES</div>
+      <h1 class="hero-title">
+        <span class="ht-line" style="--d:0.18s">THE WORLD'S</span>
+        <span class="ht-line red-line" style="--d:0.34s">CURRENCY</span>
+        <span class="ht-line" style="--d:0.50s">IN YOUR HANDS.</span>
+      </h1>
+      <p class="hero-body">Institutional-grade FX rates. Real-time market data.<br/>Zero friction. Zero cost. No sign-up.</p>
+      <div class="hero-ctas">
+        <a href="#about" class="btn-hero scroll-link">
+          Learn How It Works
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+        </a>
+        <a href="#converter" class="btn-hero-ghost scroll-link">Convert Now →</a>
+      </div>
+      <div class="hero-stats">
+        <div class="hs"><strong>170+</strong><span>Currencies</span></div>
+        <div class="hs-div"></div>
+        <div class="hs"><strong>Live</strong><span>Rates</span></div>
+        <div class="hs-div"></div>
+        <div class="hs"><strong>Free</strong><span>Forever</span></div>
+        <div class="hs-div"></div>
+        <div class="hs"><strong>&lt;1s</strong><span>Response</span></div>
+      </div>
+    </div>
 
-<select id="toCurrency">
-<option value="USD">USD</option>
-<option value="INR">INR</option>
-<option value="EUR">EUR</option>
-<option value="GBP">GBP</option>
-<option value="JPY">JPY</option>
-</select>
+    <div class="scroll-cue"><div class="sc-line"></div><span>SCROLL</span></div>
 
-<button onclick="convertCurrency()">Convert Currency</button>
+    <div class="ticker-bar">
+      <div class="ticker-label">FX LIVE</div>
+      <div class="ticker-track">
+        <div class="ticker-inner">
+          <span class="ti up">EUR/USD &nbsp;1.0842 ▲0.14%</span>
+          <span class="ti">USD/CHF &nbsp;0.9012 &nbsp;0.00%</span>
+          <span class="ti down">GBP/EUR &nbsp;0.8564 ▼0.09%</span>
+          <span class="ti up">AUD/USD &nbsp;0.6512 ▲0.31%</span>
+          <span class="ti">USD/CAD &nbsp;1.3601 &nbsp;0.01%</span>
+          <span class="ti down">USD/JPY &nbsp;149.82 ▼0.22%</span>
+          <span class="ti up">USD/SGD &nbsp;1.3481 ▲0.07%</span>
+          <span class="ti">NZD/USD &nbsp;0.5988 &nbsp;0.00%</span>
+          <span class="ti down">USD/INR &nbsp;83.42 ▼0.05%</span>
+          <span class="ti up">USD/CNY &nbsp;7.2401 ▲0.11%</span>
+          <span class="ti">CHF/JPY &nbsp;166.22 &nbsp;0.02%</span>
+          <span class="ti up">EUR/GBP &nbsp;0.8721 ▲0.03%</span>
+          <span class="ti up">EUR/USD &nbsp;1.0842 ▲0.14%</span>
+          <span class="ti">USD/CHF &nbsp;0.9012 &nbsp;0.00%</span>
+          <span class="ti down">GBP/EUR &nbsp;0.8564 ▼0.09%</span>
+          <span class="ti up">AUD/USD &nbsp;0.6512 ▲0.31%</span>
+          <span class="ti">USD/CAD &nbsp;1.3601 &nbsp;0.01%</span>
+          <span class="ti down">USD/JPY &nbsp;149.82 ▼0.22%</span>
+        </div>
+      </div>
+    </div>
+  </section>
 
-<div class="result" id="result"></div>
+  <section class="about-section" id="about">
+    <div class="about-inner">
+      <div class="about-intro" data-reveal>
+        <span class="section-eyebrow">WHAT IS XCHANGE?</span>
+        <h2 class="section-title">Your real-time window<br/>into global FX markets.</h2>
+        <p class="about-lead">XCHANGE pulls live exchange rates from global interbank markets and lets you convert any amount between 170+ currencies — instantly, accurately, and completely free. No account. No ads.</p>
+      </div>
 
-</div>
+      <div class="steps-grid">
+        <div class="step-card" data-reveal data-delay="0">
+          <div class="step-num">01</div>
+          <div class="step-icon">💱</div>
+          <h3>Enter an Amount</h3>
+          <p>Type any number you want to convert — dollars, rupees, euros, or any of 170+ supported currencies.</p>
+        </div>
+        <div class="step-card" data-reveal data-delay="100">
+          <div class="step-num">02</div>
+          <div class="step-icon">🌍</div>
+          <h3>Select Currencies</h3>
+          <p>Pick a source and a target currency. Use the swap button ⇅ to instantly flip the direction.</p>
+        </div>
+        <div class="step-card" data-reveal data-delay="200">
+          <div class="step-num">03</div>
+          <div class="step-icon">⚡</div>
+          <h3>Get Live Results</h3>
+          <p>Press Convert — or hit Enter. Your result arrives in under a second, pulled from live FX data feeds.</p>
+        </div>
+      </div>
 
-<script src="script.js"></script>
+      <div class="about-notice" data-reveal>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <span>Rates are sourced from <strong>open.er-api.com</strong> with <strong>frankfurter.app</strong> as a fallback. All data is indicative — not financial advice.</span>
+      </div>
+    </div>
+  </section>
 
+  <section class="markets-section" id="markets">
+    <div class="markets-inner">
+      <div class="section-head" data-reveal>
+        <div>
+          <span class="section-eyebrow">MARKET OVERVIEW</span>
+          <h2 class="section-title">Live FX Markets</h2>
+        </div>
+        <div class="market-status"><span class="live-dot sm"></span>Markets Open</div>
+      </div>
+      <div class="market-grid">
+        <div class="market-card" data-reveal data-delay="0">
+          <div class="mc-header">
+            <div class="mc-pair-info"><span class="mc-pair">EUR / USD</span><span class="mc-name">Euro · Dollar</span></div>
+            <span class="mc-badge up-badge">▲ +0.14%</span>
+          </div>
+          <span class="mc-price" id="mc-eur">1.0842</span>
+          <canvas class="mc-chart" id="chart-eur" width="260" height="60"></canvas>
+          <div class="mc-footer">
+            <span class="mcf-item"><label>H</label>1.0871</span>
+            <span class="mcf-item"><label>L</label>1.0798</span>
+            <span class="mcf-item"><label>VOL</label>142.3B</span>
+          </div>
+        </div>
+        <div class="market-card" data-reveal data-delay="80">
+          <div class="mc-header">
+            <div class="mc-pair-info"><span class="mc-pair">GBP / USD</span><span class="mc-name">Pound · Dollar</span></div>
+            <span class="mc-badge up-badge">▲ +0.08%</span>
+          </div>
+          <span class="mc-price" id="mc-gbp">1.2741</span>
+          <canvas class="mc-chart" id="chart-gbp" width="260" height="60"></canvas>
+          <div class="mc-footer">
+            <span class="mcf-item"><label>H</label>1.2768</span>
+            <span class="mcf-item"><label>L</label>1.2701</span>
+            <span class="mcf-item"><label>VOL</label>89.1B</span>
+          </div>
+        </div>
+        <div class="market-card" data-reveal data-delay="160">
+          <div class="mc-header">
+            <div class="mc-pair-info"><span class="mc-pair">USD / JPY</span><span class="mc-name">Dollar · Yen</span></div>
+            <span class="mc-badge down-badge">▼ -0.22%</span>
+          </div>
+          <span class="mc-price" id="mc-jpy">149.82</span>
+          <canvas class="mc-chart" id="chart-jpy" width="260" height="60"></canvas>
+          <div class="mc-footer">
+            <span class="mcf-item"><label>H</label>150.24</span>
+            <span class="mcf-item"><label>L</label>149.31</span>
+            <span class="mcf-item"><label>VOL</label>201.7B</span>
+          </div>
+        </div>
+        <div class="market-card" data-reveal data-delay="240">
+          <div class="mc-header">
+            <div class="mc-pair-info"><span class="mc-pair">AUD / USD</span><span class="mc-name">Aussie · Dollar</span></div>
+            <span class="mc-badge up-badge">▲ +0.31%</span>
+          </div>
+          <span class="mc-price" id="mc-aud">0.6512</span>
+          <canvas class="mc-chart" id="chart-aud" width="260" height="60"></canvas>
+          <div class="mc-footer">
+            <span class="mcf-item"><label>H</label>0.6541</span>
+            <span class="mcf-item"><label>L</label>0.6488</span>
+            <span class="mcf-item"><label>VOL</label>67.4B</span>
+          </div>
+        </div>
+        <div class="market-card" data-reveal data-delay="320">
+          <div class="mc-header">
+            <div class="mc-pair-info"><span class="mc-pair">USD / INR</span><span class="mc-name">Dollar · Rupee</span></div>
+            <span class="mc-badge down-badge">▼ -0.05%</span>
+          </div>
+          <span class="mc-price" id="mc-inr">83.42</span>
+          <canvas class="mc-chart" id="chart-inr" width="260" height="60"></canvas>
+          <div class="mc-footer">
+            <span class="mcf-item"><label>H</label>83.61</span>
+            <span class="mcf-item"><label>L</label>83.29</span>
+            <span class="mcf-item"><label>VOL</label>18.2B</span>
+          </div>
+        </div>
+        <div class="market-card" data-reveal data-delay="400">
+          <div class="mc-header">
+            <div class="mc-pair-info"><span class="mc-pair">USD / CNY</span><span class="mc-name">Dollar · Yuan</span></div>
+            <span class="mc-badge up-badge">▲ +0.11%</span>
+          </div>
+          <span class="mc-price" id="mc-cny">7.2401</span>
+          <canvas class="mc-chart" id="chart-cny" width="260" height="60"></canvas>
+          <div class="mc-footer">
+            <span class="mcf-item"><label>H</label>7.2489</span>
+            <span class="mcf-item"><label>L</label>7.2301</span>
+            <span class="mcf-item"><label>VOL</label>34.8B</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="converter-section" id="converter">
+    <canvas id="convBgCanvas" class="conv-bg-canvas"></canvas>
+    <div class="conv-bg-overlay"></div>
+    <div class="converter-inner">
+      <div class="conv-left" data-reveal>
+        <span class="section-eyebrow">FX CONVERTER</span>
+        <h2 class="conv-title">Convert Any<br/>Currency, Instantly.</h2>
+        <p class="conv-desc">Live interbank rates across 170+ world currencies. No account. No ads. No catch.</p>
+        <div class="conv-features">
+          <div class="cf-item"><span class="cf-icon">↗</span>Real-time interbank rates</div>
+          <div class="cf-item"><span class="cf-icon">⊞</span>170+ global currencies</div>
+          <div class="cf-item"><span class="cf-icon">⚡</span>Results in under a second</div>
+          <div class="cf-item"><span class="cf-icon">🔒</span>No sign-up required</div>
+        </div>
+        <div class="conv-tip">
+          <div class="tip-label">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            HOW TO USE
+          </div>
+          <ol class="tip-steps">
+            <li>Enter the amount you want to convert</li>
+            <li>Select the source currency (FROM)</li>
+            <li>Select the target currency (TO)</li>
+            <li>Press <strong>CONVERT</strong> or hit Enter ↵</li>
+          </ol>
+        </div>
+      </div>
+      <div class="conv-right" data-reveal data-delay="120">
+        <div class="converter-card">
+          <div class="cc-topbar">
+            <span class="cc-label">CURRENCY CONVERTER</span>
+            <span class="cc-live"><span class="live-dot sm"></span>LIVE</span>
+          </div>
+          <div class="field-group">
+            <label class="field-label">AMOUNT</label>
+            <input type="number" id="amount" class="amount-input" placeholder="0.00" min="0" step="any" />
+          </div>
+          <div class="currency-row">
+            <div class="field-group half">
+              <label class="field-label">FROM</label>
+              <div class="select-wrap">
+                <select id="fromCurrency" class="currency-select"></select>
+                <svg class="sel-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+            </div>
+            <button class="swap-btn" id="swapBtn" aria-label="Swap currencies">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M7 16V4m0 0L3 8m4-4 4 4"/><path d="M17 8v12m0 0 4-4m-4 4-4-4"/></svg>
+            </button>
+            <div class="field-group half">
+              <label class="field-label">TO</label>
+              <div class="select-wrap">
+                <select id="toCurrency" class="currency-select"></select>
+                <svg class="sel-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+            </div>
+          </div>
+          <button class="convert-btn" id="convertBtn">
+            <span class="btn-text">CONVERT</span>
+            <span class="btn-loader" id="btnLoader"></span>
+          </button>
+          <div class="result-panel" id="resultPanel">
+            <div class="rp-from" id="resultLabel"></div>
+            <svg class="rp-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            <div class="rp-to" id="resultValue"></div>
+            <div class="rp-rate" id="rateInfo"></div>
+          </div>
+          <div class="error-panel" id="errorPanel"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="footer-logo">XCHANGE</span>
+        <p class="footer-tagline">Global Currency Platform</p>
+      </div>
+      <p class="footer-disc">Market data is indicative and for informational purposes only. Rates by <a href="https://open.er-api.com" target="_blank" rel="noopener">open.er-api.com</a> · fallback <a href="https://frankfurter.app" target="_blank" rel="noopener">frankfurter.app</a></p>
+      <p class="footer-copy">© 2026 XCHANGE</p>
+    </div>
+  </footer>
+
+  <script src="currencies.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
