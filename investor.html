@@ -1,0 +1,301 @@
+<html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>XCHANGE — Investor Mode</title>
+  <link rel="stylesheet" href="investor.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <div class="api-gate" id="apiGate">
+    <div class="gate-card">
+      <div class="gate-logo">XCHANGE <span>INVESTOR</span></div>
+      <div class="gate-icon"></div>
+      <h2>Investor Mode</h2>
+      <p>Enter your free <strong>Finnhub API key</strong> to unlock live stocks, financials, news, and AI sentiment analysis.</p>
+      <a href="https://finnhub.io/register" target="_blank" rel="noopener" class="gate-link">Get a free key at finnhub.io →</a>
+      <div class="gate-input-row">
+        <input type="text" id="apiKeyInput" placeholder="e.g. cxxxxxxxxxxxxxxxxxxxxxx" />
+        <button id="apiKeySubmit">ENTER</button>
+      </div>
+      <p class="gate-note">Your key is stored only in your browser session and never sent anywhere except Finnhub.</p>
+    </div>
+  </div>
+
+  <nav class="inv-nav" id="invNav">
+    <div class="inv-nav-inner">
+      <div class="inv-brand">
+        <a href="index.html" class="inv-back">← FX</a>
+        <span class="inv-logo">INVESTOR MODE</span>
+        <span class="inv-badge live-pulse">LIVE</span>
+      </div>
+      <div class="inv-nav-links">
+        <a href="#stocks" class="inv-nav-link scroll-link">Stocks</a>
+        <a href="#metrics" class="inv-nav-link scroll-link">Metrics</a>
+        <a href="#news" class="inv-nav-link scroll-link">News</a>
+        <a href="#sentiment" class="inv-nav-link scroll-link">Sentiment</a>
+        <a href="#fundamentals" class="inv-nav-link scroll-link">Fundamentals</a>
+      </div>
+      <div class="inv-time" id="invTime"></div>
+    </div>
+  </nav>
+
+  <div class="news-headline-bar" id="headlineBar">
+    <span class="hl-label">BREAKING</span>
+    <div class="hl-track">
+      <div class="hl-inner" id="hlInner">Loading headlines...</div>
+    </div>
+  </div>
+
+  <section class="inv-hero">
+    <canvas id="invHeroCanvas"></canvas>
+    <div class="inv-hero-overlay"></div>
+    <div class="inv-hero-content">
+      <div class="inv-hero-badge"><span class="live-dot"></span>MARKET INTELLIGENCE DASHBOARD</div>
+      <h1 class="inv-hero-title">
+        <span style="--d:0.1s">TRACK.</span>
+        <span class="red" style="--d:0.24s">ANALYSE.</span>
+        <span style="--d:0.38s">DECIDE.</span>
+      </h1>
+      <p class="inv-hero-sub">Live stock prices · Financial metrics · AI sentiment analysis · Fundamental data</p>
+      <div class="inv-hero-ctas">
+        <a href="#stocks" class="btn-inv scroll-link">View Live Stocks <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12l7 7 7-7"/></svg></a>
+        <a href="#sentiment" class="btn-inv-ghost scroll-link">Sentiment Analysis →</a>
+      </div>
+    </div>
+    <div class="inv-mkt-bar" id="invMktBar">
+      <div class="imb-item"><span class="imb-label">S&P 500</span><span class="imb-val" id="sp500val">—</span><span class="imb-chg" id="sp500chg">—</span></div>
+      <div class="imb-div"></div>
+      <div class="imb-item"><span class="imb-label">NASDAQ</span><span class="imb-val" id="nasdaqval">—</span><span class="imb-chg" id="nasdaqchg">—</span></div>
+      <div class="imb-div"></div>
+      <div class="imb-item"><span class="imb-label">DOW</span><span class="imb-val" id="dowval">—</span><span class="imb-chg" id="dowchg">—</span></div>
+      <div class="imb-div"></div>
+      <div class="imb-item"><span class="imb-label">VIX</span><span class="imb-val" id="vixval">—</span><span class="imb-chg" id="vixchg">—</span></div>
+      <div class="imb-div"></div>
+      <div class="imb-item"><span class="imb-label">BTC/USD</span><span class="imb-val" id="btcval">—</span><span class="imb-chg" id="btcchg">—</span></div>
+    </div>
+  </section>
+
+  <section class="stocks-section" id="stocks">
+    <div class="sec-inner">
+      <div class="sec-head" data-reveal>
+        <div>
+          <span class="eyebrow">TOP STOCKS</span>
+          <h2 class="sec-title">Live Market Prices</h2>
+        </div>
+        <div class="stock-controls">
+          <button class="sc-btn active" data-group="mega">MEGA CAP</button>
+          <button class="sc-btn" data-group="tech">TECH</button>
+          <button class="sc-btn" data-group="finance">FINANCE</button>
+          <button class="sc-btn" data-group="energy">ENERGY</button>
+        </div>
+      </div>
+      <div class="stocks-grid" id="stocksGrid">
+        <div class="loading-state">
+          <div class="spinner"></div>
+          <span>Fetching live prices...</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="metrics-section" id="metrics">
+    <div class="sec-inner">
+      <div class="sec-head" data-reveal>
+        <div>
+          <span class="eyebrow">FINANCE METRICS</span>
+          <h2 class="sec-title">Key Market Indicators</h2>
+        </div>
+      </div>
+      <div class="metrics-grid" id="metricsGrid">
+        <div class="metric-card" data-reveal data-delay="0">
+          <div class="mc-icon"></div>
+          <div class="mc-body">
+            <span class="mc-name">Fear & Greed Index</span>
+            <span class="mc-val" id="fgiVal">—</span>
+            <span class="mc-sub" id="fgiLabel">Loading...</span>
+          </div>
+          <canvas class="mc-mini-chart" id="fgiChart" width="80" height="40"></canvas>
+        </div>
+        <div class="metric-card" data-reveal data-delay="60">
+          <div class="mc-icon"></div>
+          <div class="mc-body">
+            <span class="mc-name">Crude Oil (WTI)</span>
+            <span class="mc-val" id="oilVal">—</span>
+            <span class="mc-sub" id="oilChg">Loading...</span>
+          </div>
+          <canvas class="mc-mini-chart" id="oilChart" width="80" height="40"></canvas>
+        </div>
+        <div class="metric-card" data-reveal data-delay="120">
+          <div class="mc-icon"></div>
+          <div class="mc-body">
+            <span class="mc-name">Gold (XAU/USD)</span>
+            <span class="mc-val" id="goldVal">—</span>
+            <span class="mc-sub" id="goldChg">Loading...</span>
+          </div>
+          <canvas class="mc-mini-chart" id="goldChart" width="80" height="40"></canvas>
+        </div>
+        <div class="metric-card" data-reveal data-delay="180">
+          <div class="mc-icon"></div>
+          <div class="mc-body">
+            <span class="mc-name">10Y Treasury Yield</span>
+            <span class="mc-val" id="bondVal">—</span>
+            <span class="mc-sub" id="bondChg">Loading...</span>
+          </div>
+          <canvas class="mc-mini-chart" id="bondChart" width="80" height="40"></canvas>
+        </div>
+        <div class="metric-card" data-reveal data-delay="240">
+          <div class="mc-icon"></div>
+          <div class="mc-body">
+            <span class="mc-name">USD Index (DXY)</span>
+            <span class="mc-val" id="dxyVal">—</span>
+            <span class="mc-sub" id="dxyChg">Loading...</span>
+          </div>
+          <canvas class="mc-mini-chart" id="dxyChart" width="80" height="40"></canvas>
+        </div>
+        <div class="metric-card" data-reveal data-delay="300">
+          <div class="mc-icon">₿</div>
+          <div class="mc-body">
+            <span class="mc-name">Bitcoin Dominance</span>
+            <span class="mc-val" id="btcdomVal">—</span>
+            <span class="mc-sub" id="btcdomChg">Loading...</span>
+          </div>
+          <canvas class="mc-mini-chart" id="btcdomChart" width="80" height="40"></canvas>
+        </div>
+        <div class="metric-card wide" data-reveal data-delay="360">
+          <div class="mc-icon"></div>
+          <div class="mc-body">
+            <span class="mc-name">Market Breadth — S&P 500 Advance/Decline</span>
+            <span class="mc-val" id="breadthVal">—</span>
+            <span class="mc-sub" id="breadthSub">Stocks advancing vs declining today</span>
+          </div>
+          <div class="breadth-bar-wrap">
+            <div class="breadth-bar" id="breadthBarFill"></div>
+          </div>
+        </div>
+        <div class="metric-card wide" data-reveal data-delay="420">
+          <div class="mc-icon"></div>
+          <div class="mc-body">
+            <span class="mc-name">Sector Performance Today</span>
+            <span class="mc-sub">% change across S&P 500 sectors</span>
+          </div>
+          <div class="sector-bars" id="sectorBars"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="news-section" id="news">
+    <div class="sec-inner">
+      <div class="sec-head" data-reveal>
+        <div>
+          <span class="eyebrow">MARKET NEWS</span>
+          <h2 class="sec-title">What's Happening Now</h2>
+        </div>
+        <div class="news-filter">
+          <button class="nf-btn active" data-cat="general">ALL</button>
+          <button class="nf-btn" data-cat="forex">FOREX</button>
+          <button class="nf-btn" data-cat="crypto">CRYPTO</button>
+          <button class="nf-btn" data-cat="merger">M&A</button>
+        </div>
+      </div>
+      <div class="news-grid" id="newsGrid">
+        <div class="loading-state"><div class="spinner"></div><span>Loading news feed...</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sentiment-section" id="sentiment">
+    <div class="sec-inner">
+      <div class="sec-head" data-reveal>
+        <div>
+          <span class="eyebrow">AI SENTIMENT ANALYSIS</span>
+          <h2 class="sec-title">What Should You Do?</h2>
+        </div>
+      </div>
+      <div class="sentiment-layout">
+        <div class="sentiment-input-panel" data-reveal>
+          <div class="sip-label">ANALYSE A HEADLINE OR TICKER</div>
+          <div class="sip-mode-row">
+            <button class="sip-mode active" data-mode="headline">Headline Analysis</button>
+            <button class="sip-mode" data-mode="ticker">Stock Ticker</button>
+          </div>
+          <div class="sip-form" id="sipForm">
+            <textarea id="sentimentText" placeholder="Paste a news headline or financial text here..." rows="4"></textarea>
+            <div class="sip-ticker-row" id="sipTickerRow" style="display:none">
+              <input type="text" id="sentimentTicker" placeholder="e.g. AAPL" class="sip-ticker-input" />
+              <span class="sip-ticker-hint">We'll fetch the latest news for this ticker</span>
+            </div>
+            <button class="sip-run-btn" id="runSentiment">
+              <span>ANALYSE NOW</span>
+              <span class="sip-loader" id="sipLoader"></span>
+            </button>
+          </div>
+        </div>
+
+        <div class="sentiment-result-panel" id="sentimentResult">
+          <div class="srp-empty">
+            <div class="srp-empty-icon"></div>
+            <p>Run an analysis to see the AI verdict here.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="sentiment-feed" id="sentimentFeed">
+        <div class="sf-head">
+          <span class="eyebrow">LATEST TICKER SENTIMENT FROM FINNHUB</span>
+        </div>
+        <div class="sf-grid" id="sfGrid">
+          <div class="loading-state"><div class="spinner"></div><span>Loading sentiment data...</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="fundamentals-section" id="fundamentals">
+    <div class="sec-inner">
+      <div class="sec-head" data-reveal>
+        <div>
+          <span class="eyebrow">FUNDAMENTAL ANALYSIS</span>
+          <h2 class="sec-title">Company Deep Dive</h2>
+        </div>
+        <div class="fund-search-wrap">
+          <input type="text" id="fundTicker" placeholder="Enter ticker e.g. AAPL" class="fund-ticker-input" />
+          <button id="fundSearch" class="fund-search-btn">ANALYSE</button>
+        </div>
+      </div>
+
+      <div id="fundResult">
+        <div class="fund-placeholder" data-reveal>
+          <div class="fp-icon"></div>
+          <p>Enter a stock ticker above to see full fundamental analysis — P/E ratio, EPS, revenue growth, debt levels, margins, and more.</p>
+          <div class="fp-suggestions">
+            <span class="fp-chip" data-ticker="AAPL">AAPL</span>
+            <span class="fp-chip" data-ticker="MSFT">MSFT</span>
+            <span class="fp-chip" data-ticker="GOOGL">GOOGL</span>
+            <span class="fp-chip" data-ticker="TSLA">TSLA</span>
+            <span class="fp-chip" data-ticker="NVDA">NVDA</span>
+            <span class="fp-chip" data-ticker="AMZN">AMZN</span>
+            <span class="fp-chip" data-ticker="META">META</span>
+            <span class="fp-chip" data-ticker="JPM">JPM</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="inv-footer">
+    <div class="inv-footer-inner">
+      <div>
+        <span class="inv-footer-logo">XCHANGE INVESTOR</span>
+        <p class="inv-footer-sub">Powered by Finnhub.io · For informational use only · Not financial advice</p>
+      </div>
+      <a href="index.html" class="inv-footer-back">← Back to Currency Converter</a>
+    </div>
+  </footer>
+
+  <script src="investor.js"></script>
+</body>
+</html>

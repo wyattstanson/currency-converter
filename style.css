@@ -52,6 +52,8 @@ body { background: var(--black); color: var(--text-1); font-family: var(--sans);
 .nav-links { display: flex; gap: 28px; }
 .nav-link { font-size: 0.82rem; color: var(--text-2); text-decoration: none; letter-spacing: 0.04em; transition: color 0.15s; }
 .nav-link:hover { color: var(--text-1); }
+.nav-investor { background: rgba(0,196,125,0.1); color: var(--green); font-weight: 500; font-size: 0.82rem; letter-spacing: 0.04em; padding: 8px 16px; border-radius: 3px; text-decoration: none; border: 1px solid rgba(0,196,125,0.25); transition: background 0.15s, transform 0.15s; }
+.nav-investor:hover { background: rgba(0,196,125,0.2); transform: scale(1.03); }
 .nav-cta { background: var(--red); color: #fff; font-weight: 500; font-size: 0.82rem; letter-spacing: 0.04em; padding: 8px 20px; border-radius: 3px; text-decoration: none; transition: background 0.15s, transform 0.15s; }
 .nav-cta:hover { background: #f40612; transform: scale(1.03); }
 
